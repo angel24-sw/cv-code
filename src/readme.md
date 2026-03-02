@@ -1,5 +1,19 @@
-"Lorem ipsum dulor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-labore et dulore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labo
-ris nisi ut aliquip ex ea commodo consequat. Duis aute irure dulor in reprehenderit in voluptate
-velit esse cillum dulore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+# Sistema de Ventas Editable
+
+Aplicación web simple (sin backend) que usa `localStorage` como base de datos editable.
+
+## Funcionalidades
+- Gestión de **clientes** (crear, editar, eliminar).
+- Gestión de **productos** (crear, editar, eliminar, precio editable).
+- Registro de ventas con cálculo automático de:
+  - Subtotal
+  - IGV (18%)
+  - Total
+- Carga de imágenes para clientes y productos.
+
+## Uso
+1. Abrir `src/index.html` en el navegador.
+2. Registrar clientes y productos.
+3. Crear comprobantes desde la sección “Comprobante de Venta”.
+
+> Los datos quedan guardados en el navegador actual mediante `localStorage`.

@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
+    <header class="topbar">
       <div>
         <h1>Sistema Integral de Ventas y Cotizaciones</h1>
-        <p>CRM + Productos + Cotizaciones + Ventas + Reportes + Seguridad</p>
+        <p>CRM + Productos + Cotizaciones + Ventas + Reportes</p>
       </div>
       <div class="session-box">
         <span id="session-user"></span>
@@ -31,16 +31,16 @@
 
       <div id="app-main" class="hidden">
         <nav class="panel tabs" id="main-tabs">
-          <button class="tab-btn active" data-view="crm">CRM Clientes</button>
-          <button class="tab-btn" data-view="products">Productos y Stock</button>
+          <button class="tab-btn active" data-view="crm">CRM</button>
+          <button class="tab-btn" data-view="products">Productos</button>
           <button class="tab-btn" data-view="quotes">Cotizaciones</button>
           <button class="tab-btn" data-view="sales">Ventas</button>
           <button class="tab-btn" data-view="reports">Reportes</button>
-          <button class="tab-btn" data-view="config">Config / Soporte</button>
+          <button class="tab-btn" data-view="config">Configuración</button>
         </nav>
 
         <section class="panel view active" data-view="crm">
-          <h2>Gestión de Clientes (CRM)</h2>
+          <h2>Clientes</h2>
           <form id="client-form" class="grid-form">
             <input type="hidden" id="client-id" />
             <label>RUC <input id="client-ruc" required maxlength="20" /></label>
@@ -58,13 +58,13 @@
         </section>
 
         <section class="panel view" data-view="products">
-          <h2>Catálogo de Productos con Stock en tiempo real</h2>
+          <h2>Productos y Stock</h2>
           <form id="product-form" class="grid-form">
             <input type="hidden" id="product-id" />
             <label>Código <input id="product-code" required maxlength="30" /></label>
             <label>Nombre <input id="product-name" required maxlength="120" /></label>
             <label>Precio (S/.) <input id="product-price" type="number" min="0" step="0.01" required /></label>
-            <label>Stock actual <input id="product-stock" type="number" min="0" step="1" required /></label>
+            <label>Stock <input id="product-stock" type="number" min="0" step="1" required /></label>
             <label>Imagen <input id="product-image" type="file" accept="image/*" /></label>
             <div class="form-actions">
               <button type="submit">Guardar producto</button>
@@ -75,13 +75,13 @@
         </section>
 
         <section class="panel view" data-view="quotes" id="quote-panel">
-          <h2>Cotizaciones Automatizadas</h2>
+          <h2>Cotizaciones</h2>
           <form id="quote-item-form" class="grid-form">
             <label>Cliente <select id="quote-client" required></select></label>
             <label>Producto <select id="quote-product" required></select></label>
             <label>Cantidad <input id="quote-qty" type="number" min="1" value="1" required /></label>
             <label>P. Unitario <input id="quote-unit-price" type="number" min="0" step="0.01" required /></label>
-            <label>Descuento (S/.) <input id="quote-discount" type="number" min="0" step="0.01" value="0" /></label>
+            <label>Descuento <input id="quote-discount" type="number" min="0" step="0.01" value="0" /></label>
             <button type="submit">Agregar ítem</button>
           </form>
 
@@ -110,13 +110,13 @@
         </section>
 
         <section class="panel view" data-view="sales">
-          <h2>Ventas y Facturación electrónica</h2>
+          <h2>Ventas</h2>
           <form id="invoice-form" class="grid-form">
             <label>Cliente <select id="invoice-client" required></select></label>
             <label>Producto <select id="invoice-product" required></select></label>
             <label>Cantidad <input id="invoice-qty" type="number" min="1" value="1" required /></label>
             <label>P. Unitario <input id="invoice-unit-price" type="number" min="0" step="0.01" required /></label>
-            <label>Tipo comprobante
+            <label>Comprobante
               <select id="invoice-doc-type">
                 <option value="Factura">Factura</option>
                 <option value="Boleta">Boleta</option>
@@ -133,18 +133,21 @@
         </section>
 
         <section class="panel view" data-view="reports">
-          <h2>Reportes de Ventas</h2>
+          <h2>Reportes</h2>
           <div id="reports-box" class="kpis"></div>
         </section>
 
         <section class="panel view" data-view="config">
-          <h2>Seguridad de datos y Soporte técnico local</h2>
-          <ul>
-            <li>Base local cifrada por navegador (localStorage del equipo).</li>
-            <li>Control de sesión con login/logout.</li>
-            <li>Exportar / importar respaldo JSON.</li>
-            <li>Soporte local: revisa logs del navegador y estado del servidor local.</li>
-          </ul>
+          <h2>Configuración / Empresa</h2>
+          <form id="company-form" class="grid-form">
+            <label>Nombre empresa <input id="company-name" maxlength="150" /></label>
+            <label>RUC empresa <input id="company-ruc" maxlength="20" /></label>
+            <label>Teléfono empresa <input id="company-phone" maxlength="30" /></label>
+            <label>Correo empresa <input id="company-email" maxlength="120" /></label>
+            <label>Dirección empresa <input id="company-address" maxlength="180" /></label>
+            <label>Logo empresa <input id="company-logo" type="file" accept="image/*" /></label>
+            <button type="submit">Guardar datos empresa</button>
+          </form>
           <div class="form-actions compact">
             <button id="btn-export" type="button">Exportar JSON</button>
             <label class="file-btn">Importar JSON <input id="btn-import" type="file" accept="application/json" /></label>

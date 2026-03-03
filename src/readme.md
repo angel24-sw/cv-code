@@ -1,15 +1,16 @@
 # Sistema Integral de Ventas y Cotizaciones
 
-Incluye login, CRM, productos con stock en tiempo real, cotizaciones, ventas, reportes y respaldo local.
+Sistema web con interfaz moderna para gestionar clientes, productos, ventas y cotizaciones.
 
-## Módulos
-- **Login y seguridad:** acceso por usuario (`admin` / `123456`) y cierre de sesión.
-- **CRM Clientes:** RUC, razón social, teléfono, correo, dirección e imagen.
-- **Productos:** código, nombre, precio, stock en tiempo real e imagen.
-- **Cotizaciones:** jala precios de productos automáticamente, calcula cantidad x precio, descuento, IGV, total, estado (borrador/enviado/aprobado/rechazado) e impresión.
-- **Ventas:** registra comprobantes (Factura/Boleta), descuenta stock y marca estado de facturación electrónica (`Emitido`).
-- **Reportes:** ventas acumuladas, total cotizaciones, aprobadas y alertas de stock bajo.
-- **Soporte local:** exportar/importar JSON y reinicio de base de datos.
+## Incluye
+- Login con sesión (`admin` / `123456`).
+- CRM de clientes (RUC, razón social, teléfono, correo, dirección, imagen).
+- Catálogo de productos con stock en tiempo real e imagen.
+- Cotizaciones en **formato tabla profesional** con cálculo de cantidad x precio, descuento, IGV y total.
+- Configuración de empresa con **logo**, datos de empresa y visualización del logo dentro de la cotización imprimible.
+- Registro de ventas (Factura/Boleta), descuento automático de stock y estado de facturación electrónica.
+- Reportes de ventas y stock bajo.
+- Exportar/importar JSON y reset de base de datos local.
 
 ## Ejecutar
 Desde la raíz del repo:
@@ -18,5 +19,5 @@ Desde la raíz del repo:
 node --check src/app.js && python -m http.server 4173
 ```
 
-Luego abre:
+Abrir:
 - `http://127.0.0.1:4173/src/index.html`

@@ -1,19 +1,22 @@
 # Sistema de Ventas Editable
 
-Aplicación web simple (sin backend) que usa `localStorage` como base de datos editable.
+Aplicación web local (sin backend) con base de datos editable usando `localStorage`.
 
-## Funcionalidades
-- Gestión de **clientes** (crear, editar, eliminar).
-- Gestión de **productos** (crear, editar, eliminar, precio editable).
-- Registro de ventas con cálculo automático de:
+## Qué puedes hacer
+- Crear, editar y eliminar **clientes**.
+- Crear, editar y eliminar **productos** con precio editable.
+- Subir **imágenes** para clientes y productos.
+- Registrar ventas y calcular automáticamente:
   - Subtotal
-  - IGV (18%)
+  - IGV (configurable en porcentaje)
   - Total
-- Carga de imágenes para clientes y productos.
+- Exportar/importar la base de datos en JSON.
+- Reiniciar la base de datos local.
 
-## Uso
-1. Abrir `src/index.html` en el navegador.
-2. Registrar clientes y productos.
-3. Crear comprobantes desde la sección “Comprobante de Venta”.
+## Uso rápido
+1. Abre `src/index.html` en tu navegador.
+2. Registra clientes y productos.
+3. Ve a “Comprobante de Venta” para emitir ventas.
+4. Usa el bloque “Base de datos” para respaldo/restauración.
 
-> Los datos quedan guardados en el navegador actual mediante `localStorage`.
+> Todos los datos se guardan en el navegador actual (`localStorage`).

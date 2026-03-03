@@ -1,13 +1,16 @@
 :root {
-  color-scheme: light;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --bg: #f5f7fb;
   --card: #ffffff;
   --ink: #1f2a44;
-  --primary: #3a73ff;
+  --primary: #2f64e1;
+  --secondary: #eef2ff;
+  --danger: #d94848;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -16,7 +19,7 @@ body {
 }
 
 header {
-  background: linear-gradient(120deg, #2855cc, #3a73ff);
+  background: linear-gradient(120deg, #244cae, #356ff6);
   color: #fff;
   padding: 1.25rem;
 }
@@ -31,7 +34,7 @@ main {
   background: var(--card);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 8%);
 }
 
 .grid-form {
@@ -56,10 +59,44 @@ button {
   font-size: 0.95rem;
 }
 
-button {
+button,
+.file-btn {
   background: var(--primary);
-  color: white;
+  color: #fff;
   cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.file-btn {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-btn input {
+  display: none;
+}
+
+.secondary {
+  background: var(--secondary);
+  color: var(--ink);
+  border-color: #cfd8fb;
+}
+
+.danger,
+.actions button:last-child {
+  background: var(--danger);
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.form-actions.compact {
+  flex-wrap: wrap;
 }
 
 .cards {
@@ -94,10 +131,6 @@ button {
   gap: 0.4rem;
 }
 
-.actions button:last-child {
-  background: #d94848;
-}
-
 .totals {
   border: 1px dashed #97a7d6;
   border-radius: 8px;
@@ -115,4 +148,22 @@ td {
   border-bottom: 1px solid #e1e6f5;
   padding: 0.5rem;
   text-align: left;
+}
+
+.muted {
+  margin-top: 0;
+  color: #5f6c92;
+}
+
+.status {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border-radius: 8px;
+  background: #e9f7ec;
+  color: #1f7a35;
+}
+
+.status.error {
+  background: #fdeaea;
+  color: #9e2a2a;
 }

@@ -73,6 +73,60 @@
         <div id="invoice-list" class="table-container"></div>
       </section>
 
+      <section class="panel" id="quote-panel">
+        <h2>Cotizaciones (formato profesional)</h2>
+        <form id="quote-item-form" class="grid-form">
+          <label>Cliente
+            <select id="quote-client" required></select>
+          </label>
+          <label>Producto
+            <select id="quote-product"></select>
+          </label>
+          <label>Cantidad
+            <input id="quote-qty" type="number" min="1" value="1" required />
+          </label>
+          <label>P. Unitario (S/.)
+            <input id="quote-unit-price" type="number" min="0" step="0.01" required />
+          </label>
+          <label>Descuento (S/.)
+            <input id="quote-discount" type="number" min="0" step="0.01" value="0" />
+          </label>
+          <div class="form-actions">
+            <button type="submit">Agregar ítem</button>
+            <button type="button" id="quote-clear-items" class="secondary">Limpiar ítems</button>
+          </div>
+        </form>
+
+        <form id="quote-meta-form" class="grid-form quote-meta">
+          <label>Número
+            <input id="quote-number" placeholder="COT-0001" maxlength="30" />
+          </label>
+          <label>Validez (días)
+            <input id="quote-valid-days" type="number" min="1" value="7" />
+          </label>
+          <label>Atención
+            <input id="quote-attention" placeholder="Nombre de contacto" maxlength="120" />
+          </label>
+          <label>Moneda
+            <select id="quote-currency">
+              <option value="S/.">S/. (PEN)</option>
+              <option value="$">$ (USD)</option>
+            </select>
+          </label>
+          <label class="full-width">Observaciones
+            <textarea id="quote-notes" rows="3" placeholder="Condiciones, forma de pago, entrega..."></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="button" id="quote-save">Guardar cotización</button>
+            <button type="button" id="quote-print" class="secondary">Imprimir cotización</button>
+          </div>
+        </form>
+
+        <div id="quote-items" class="table-container"></div>
+
+        <article id="quote-preview" class="quote-preview"></article>
+      </section>
+
       <section class="panel">
         <h2>Base de datos (LocalStorage)</h2>
         <p class="muted">Puedes exportar tus datos a JSON, importarlos o reiniciar todo.</p>

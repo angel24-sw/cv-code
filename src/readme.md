@@ -1,5 +1,9 @@
-"Lorem ipsum dulor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-labore et dulore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labo
-ris nisi ut aliquip ex ea commodo consequat. Duis aute irure dulor in reprehenderit in voluptate
-velit esse cillum dulore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+# Sistema de cotizaciones
+
+Abre `src/index.html` en tu navegador para usar un sistema básico con:
+
+- Inicio de sesión con usuario y contraseña (`admin` / `1234`).
+- Registro de clientes.
+- Registro de productos con imagen y precio unitario.
+- Generación de cotizaciones con cálculo de subtotal, IGV (18%) y total.
+- Carga de logo empresarial y estilo visual azul/amarillo.

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Integral de Ventas y Cotizaciones</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Sistema Integral de Ventas y Cotizaciones</h1>
+        <p>CRM + Productos + Cotizaciones + Ventas + Reportes</p>
+      </div>
+      <div class="session-box">
+        <span id="session-user"></span>
+        <button id="logout-btn" type="button" class="secondary hidden">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel login-panel" id="login-panel">
+        <h2>Login</h2>
+        <p class="muted">Acceso: <strong>admin</strong> / <strong>123456</strong></p>
+        <form id="login-form" class="grid-form">
+          <label>Usuario <input id="login-user" required /></label>
+          <label>Contraseña <input id="login-pass" type="password" required /></label>
+          <button type="submit">Iniciar sesión</button>
+        </form>
+      </section>
+
+      <div id="app-main" class="hidden">
+        <nav class="panel tabs" id="main-tabs">
+          <button class="tab-btn active" data-view="crm">CRM</button>
+          <button class="tab-btn" data-view="products">Productos</button>
+          <button class="tab-btn" data-view="quotes">Cotizaciones</button>
+          <button class="tab-btn" data-view="sales">Ventas</button>
+          <button class="tab-btn" data-view="reports">Reportes</button>
+          <button class="tab-btn" data-view="config">Configuración</button>
+        </nav>
+
+        <section class="panel view active" data-view="crm">
+          <h2>Clientes</h2>
+          <form id="client-form" class="grid-form">
+            <input type="hidden" id="client-id" />
+            <label>RUC <input id="client-ruc" required maxlength="20" /></label>
+            <label>Razón social <input id="client-business" required maxlength="140" /></label>
+            <label>Teléfono <input id="client-phone" required maxlength="30" /></label>
+            <label>Correo <input id="client-email" type="email" required maxlength="120" /></label>
+            <label>Dirección <input id="client-address" maxlength="180" /></label>
+            <label>Imagen <input id="client-image" type="file" accept="image/*" /></label>
+            <div class="form-actions">
+              <button type="submit">Guardar cliente</button>
+              <button id="client-cancel" type="button" class="secondary">Cancelar</button>
+            </div>
+          </form>
+          <div id="client-list" class="cards"></div>
+        </section>
+
+        <section class="panel view" data-view="products">
+          <h2>Productos y Stock</h2>
+          <form id="product-form" class="grid-form">
+            <input type="hidden" id="product-id" />
+            <label>Código <input id="product-code" required maxlength="30" /></label>
+            <label>Nombre <input id="product-name" required maxlength="120" /></label>
+            <label>Precio (S/.) <input id="product-price" type="number" min="0" step="0.01" required /></label>
+            <label>Stock <input id="product-stock" type="number" min="0" step="1" required /></label>
+            <label>Imagen <input id="product-image" type="file" accept="image/*" /></label>
+            <div class="form-actions">
+              <button type="submit">Guardar producto</button>
+              <button id="product-cancel" type="button" class="secondary">Cancelar</button>
+            </div>
+          </form>
+          <div id="product-list" class="cards"></div>
+        </section>
+
+        <section class="panel view" data-view="quotes" id="quote-panel">
+          <h2>Cotizaciones</h2>
+          <form id="quote-item-form" class="grid-form">
+            <label>Cliente <select id="quote-client" required></select></label>
+            <label>Producto <select id="quote-product" required></select></label>
+            <label>Cantidad <input id="quote-qty" type="number" min="1" value="1" required /></label>
+            <label>P. Unitario <input id="quote-unit-price" type="number" min="0" step="0.01" required /></label>
+            <label>Descuento <input id="quote-discount" type="number" min="0" step="0.01" value="0" /></label>
+            <button type="submit">Agregar ítem</button>
+          </form>
+
+          <form id="quote-meta-form" class="grid-form">
+            <label>Número <input id="quote-number" placeholder="COT-0001" /></label>
+            <label>Validez (días) <input id="quote-valid-days" type="number" min="1" value="7" /></label>
+            <label>Estado
+              <select id="quote-status">
+                <option value="Borrador">Borrador</option>
+                <option value="Enviado">Enviado</option>
+                <option value="Aprobado">Aprobado</option>
+                <option value="Rechazado">Rechazado</option>
+              </select>
+            </label>
+            <label>IGV (%) <input id="igv-rate" type="number" min="0" step="0.01" value="18" /></label>
+            <label class="full-width">Observaciones <textarea id="quote-notes" rows="2"></textarea></label>
+            <div class="form-actions">
+              <button id="quote-save" type="button">Guardar cotización</button>
+              <button id="quote-clear-items" type="button" class="secondary">Limpiar ítems</button>
+              <button id="quote-print" type="button" class="secondary">Imprimir</button>
+            </div>
+          </form>
+
+          <div id="quote-items" class="table-container"></div>
+          <article id="quote-preview" class="quote-preview"></article>
+        </section>
+
+        <section class="panel view" data-view="sales">
+          <h2>Ventas</h2>
+          <form id="invoice-form" class="grid-form">
+            <label>Cliente <select id="invoice-client" required></select></label>
+            <label>Producto <select id="invoice-product" required></select></label>
+            <label>Cantidad <input id="invoice-qty" type="number" min="1" value="1" required /></label>
+            <label>P. Unitario <input id="invoice-unit-price" type="number" min="0" step="0.01" required /></label>
+            <label>Comprobante
+              <select id="invoice-doc-type">
+                <option value="Factura">Factura</option>
+                <option value="Boleta">Boleta</option>
+              </select>
+            </label>
+            <div class="totals">
+              <p>Subtotal: <strong id="subtotal">S/. 0.00</strong></p>
+              <p>IGV: <strong id="igv">S/. 0.00</strong></p>
+              <p>Total: <strong id="total">S/. 0.00</strong></p>
+            </div>
+            <button type="submit">Registrar venta</button>
+          </form>
+          <div id="invoice-list" class="table-container"></div>
+        </section>
+
+        <section class="panel view" data-view="reports">
+          <h2>Reportes</h2>
+          <div id="reports-box" class="kpis"></div>
+        </section>
+
+        <section class="panel view" data-view="config">
+          <h2>Configuración / Empresa</h2>
+          <form id="company-form" class="grid-form">
+            <label>Nombre empresa <input id="company-name" maxlength="150" /></label>
+            <label>RUC empresa <input id="company-ruc" maxlength="20" /></label>
+            <label>Teléfono empresa <input id="company-phone" maxlength="30" /></label>
+            <label>Correo empresa <input id="company-email" maxlength="120" /></label>
+            <label>Dirección empresa <input id="company-address" maxlength="180" /></label>
+            <label>Logo empresa <input id="company-logo" type="file" accept="image/*" /></label>
+            <button type="submit">Guardar datos empresa</button>
+          </form>
+          <div class="form-actions compact">
+            <button id="btn-export" type="button">Exportar JSON</button>
+            <label class="file-btn">Importar JSON <input id="btn-import" type="file" accept="application/json" /></label>
+            <button id="btn-reset" type="button" class="danger">Reiniciar BD</button>
+          </div>
+        </section>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <template id="card-template">
+      <article class="card">
+        <img class="thumb" alt="Imagen" />
+        <div class="content"></div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

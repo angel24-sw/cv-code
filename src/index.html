@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Cotizaciones</title>
+  <style>
+    :root {
+      --azul: #0057b8;
+      --azul-2: #0a3f84;
+      --azul-suave: #e9f1ff;
+      --amarillo: #ffcc00;
+      --fondo: #f7faff;
+      --texto: #17335b;
+      --blanco: #fff;
+      --borde: #cfe0ff;
+      --error: #d62828;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      background: linear-gradient(180deg, var(--azul-suave), var(--fondo));
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: var(--blanco);
+      border: 2px solid var(--borde);
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0, 87, 184, 0.1);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+
+    .title {
+      color: var(--azul);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      background: var(--amarillo);
+      color: #1f2a44;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: .8rem;
+      font-weight: bold;
+    }
+
+    .grid { display: grid; gap: 12px; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #b7cdf4;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    button {
+      border: none;
+      background: var(--azul);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-yellow {
+      background: var(--amarillo);
+      color: #1f2a44;
+    }
+
+    .hidden { display: none !important; }
+    .error { color: var(--error); margin-top: 8px; }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .menu button {
+      width: auto;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #d7e7ff;
+      color: var(--azul-2);
+      border: 1px solid #bdd4fb;
+    }
+
+    .menu button.active {
+      background: var(--azul);
+      color: #fff;
+      border-color: var(--azul);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #dce8fb;
+      padding: 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f0f6ff;
+      color: var(--azul);
+    }
+
+    .thumb {
+      width: 46px;
+      height: 46px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #c9daf9;
+      background: #f8fbff;
+    }
+
+    #logoPreview {
+      max-height: 58px;
+      border-radius: 8px;
+      border: 1px solid #c9daf9;
+      padding: 4px;
+      background: #fff;
+    }
+
+    .totales {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .box {
+      background: #eef5ff;
+      border: 1px solid #cadaf7;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .box strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--azul-2);
+      font-size: 1.05rem;
+    }
+
+    .print-sheet {
+      border: 2px dashed #b5cbf3;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .print-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid #e2ecff;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .print-logo {
+      max-height: 70px;
+      max-width: 240px;
+      object-fit: contain;
+    }
+
+    @media print {
+      body { background: #fff; }
+      #loginSection, #topConfig, .menu, #cotizador, #clientes, #productos, #btnImprimir {
+        display: none !important;
+      }
+      #imprimir {
+        display: block !important;
+      }
+      .container { margin: 0; max-width: 100%; padding: 0; }
+      .card { border: none; box-shadow: none; margin: 0; padding: 0; }
+      .print-sheet { border: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section id="loginSection" class="card">
+      <h1 class="title">Acceso al sistema <span class="badge">Azul + Amarillo</span></h1>
+      <p>Usuario demo: <b>admin</b> | Contraseña demo: <b>1234</b></p>
+      <div class="grid grid-2">
+        <div>
+          <label for="usuario">Usuario</label>
+          <input id="usuario" type="text" placeholder="Ingresa tu usuario" />
+        </div>
+        <div>
+          <label for="clave">Contraseña</label>
+          <input id="clave" type="password" placeholder="Ingresa tu contraseña" />
+        </div>
+      </div>
+      <div style="margin-top:12px; max-width:240px;">
+        <button id="btnLogin">Iniciar sesión</button>
+      </div>
+      <div id="loginError" class="error hidden">Credenciales inválidas.</div>
+    </section>
+
+    <section id="appSection" class="hidden">
+      <section id="topConfig" class="card">
+        <h1 class="title">
+          <img id="logoPreview" alt="Logo de empresa" />
+          <span>Sistema de Clientes, Productos y Cotizaciones</span>
+        </h1>
+        <div class="grid grid-2">
+          <div>
+            <label for="empresa">Nombre de tu empresa</label>
+            <input id="empresa" type="text" placeholder="Mi Empresa S.A.C." />
+          </div>
+          <div>
+            <label for="logo">Subir logo de empresa</label>
+            <input id="logo" type="file" accept="image/*" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <nav class="menu">
+          <button id="menuClientes" class="active">Clientes</button>
+          <button id="menuProductos">Productos</button>
+          <button id="menuCotizar">Elaborar cotización</button>
+          <button id="menuImprimir">Imprimir cotización</button>
+        </nav>
+
+        <div id="clientes" class="panel">
+          <h2>Clientes</h2>
+          <div class="grid grid-2">
+            <div>
+              <label for="clienteNombre">Nombre del cliente</label>
+              <input id="clienteNombre" type="text" placeholder="Cliente" />
+            </div>
+            <div style="align-self:end;">
+              <button id="agregarCliente">Añadir cliente</button>
+            </div>
+          </div>
+          <ul id="listaClientes"></ul>
+        </div>
+
+        <div id="productos" class="panel hidden">
+          <h2>Productos</h2>
+          <div class="grid grid-3">
+            <div>
+              <label for="productoNombre">Nombre del producto</label>
+              <input id="productoNombre" type="text" placeholder="Producto" />
+            </div>
+            <div>
+              <label for="productoPrecio">Precio unitario (S/)</label>
+              <input id="productoPrecio" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div>
+              <label for="productoImagen">Imagen del producto</label>
+              <input id="productoImagen" type="file" accept="image/*" />
+            </div>
+          </div>
+          <div style="margin-top:10px; max-width:260px;">
+            <button id="agregarProducto">Añadir producto</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Producto</th>
+                <th>Costo unitario</th>
+              </tr>
+            </thead>
+            <tbody id="tablaProductos"></tbody>
+          </table>
+        </div>
+
+        <div id="cotizador" class="panel hidden">
+          <h2>Elaborar cotización</h2>
+          <div class="grid grid-3">
+            <div>
+              <label for="selectCliente">Cliente</label>
+              <select id="selectCliente"></select>
+            </div>
+            <div>
+              <label for="selectProducto">Producto</label>
+              <select id="selectProducto"></select>
+            </div>
+            <div>
+              <label for="cantidad">Cantidad</label>
+              <input id="cantidad" type="number" min="1" value="1" />
+            </div>
+          </div>
+          <div class="grid grid-2" style="margin-top:10px;">
+            <button id="agregarItem">Agregar a cotización</button>
+            <button id="limpiarCotizacion" class="btn-yellow">Limpiar cotización</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Costo unitario</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="tablaCotizacion"></tbody>
+          </table>
+          <div class="totales">
+            <div class="box">Subtotal <strong id="subtotal">S/ 0.00</strong></div>
+            <div class="box">IGV (18%) <strong id="igv">S/ 0.00</strong></div>
+            <div class="box">Total <strong id="total">S/ 0.00</strong></div>
+          </div>
+        </div>
+
+        <div id="imprimir" class="panel hidden">
+          <h2>Imprimir cotización</h2>
+          <div class="print-sheet" id="printArea">
+            <div class="print-header">
+              <div>
+                <h3 id="printEmpresa">Mi Empresa</h3>
+                <p>Cliente: <strong id="printCliente">-</strong></p>
+                <p>Fecha: <strong id="printFecha"></strong></p>
+              </div>
+              <img id="printLogo" class="print-logo" alt="Logo" />
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Costo unitario</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody id="printTabla"></tbody>
+            </table>
+
+            <div class="totales">
+              <div class="box">Subtotal <strong id="printSubtotal">S/ 0.00</strong></div>
+              <div class="box">IGV (18%) <strong id="printIgv">S/ 0.00</strong></div>
+              <div class="box">Total <strong id="printTotal">S/ 0.00</strong></div>
+            </div>
+          </div>
+          <div style="margin-top:12px; max-width:260px;">
+            <button id="btnImprimir">Imprimir cotización</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script>
+    const IGV = 0.18;
+    const state = {
+      empresa: 'Mi Empresa',
+      logo: '',
+      clientes: [],
+      productos: [],
+      cotizacion: []
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const formatMoney = (n) => `S/ ${Number(n).toFixed(2)}`;
+
+    const setPanel = (panelId, menuId) => {
+      ['clientes', 'productos', 'cotizador', 'imprimir'].forEach((id) => {
+        $(id).classList.toggle('hidden', id !== panelId);
+      });
+      ['menuClientes', 'menuProductos', 'menuCotizar', 'menuImprimir'].forEach((id) => {
+        $(id).classList.remove('active');
+      });
+      $(menuId).classList.add('active');
+      if (panelId === 'imprimir') updatePrintView();
+    };
+
+    const loadDemoData = () => {
+      state.logo = 'data:image/svg+xml;base64,' + btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="220" height="70">
+          <rect width="100%" height="100%" fill="#0057b8"/>
+          <rect x="8" y="8" width="34" height="54" fill="#ffcc00"/>
+          <text x="52" y="42" font-size="22" fill="#fff" font-family="Arial" font-weight="bold">Mi Empresa</text>
+        </svg>
+      `);
+      state.clientes = ['Cliente Ejemplo'];
+      state.productos = [
+        {
+          nombre: 'Producto Demo',
+          precio: 120,
+          imagen: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="100%" height="100%" fill="#ffcc00"/><text x="8" y="44" font-size="16" fill="#0057b8" font-family="Arial">Demo</text></svg>')
+        }
+      ];
+      $('empresa').value = state.empresa;
+      $('logoPreview').src = state.logo;
+      renderClientes();
+      renderProductos();
+      renderCotizacion();
+      updatePrintView();
+    };
+
+    $('btnLogin').addEventListener('click', () => {
+      const user = $('usuario').value.trim();
+      const pass = $('clave').value.trim();
+      if (user === 'admin' && pass === '1234') {
+        $('loginSection').classList.add('hidden');
+        $('appSection').classList.remove('hidden');
+        loadDemoData();
+      } else {
+        $('loginError').classList.remove('hidden');
+      }
+    });
+
+    $('menuClientes').addEventListener('click', () => setPanel('clientes', 'menuClientes'));
+    $('menuProductos').addEventListener('click', () => setPanel('productos', 'menuProductos'));
+    $('menuCotizar').addEventListener('click', () => setPanel('cotizador', 'menuCotizar'));
+    $('menuImprimir').addEventListener('click', () => setPanel('imprimir', 'menuImprimir'));
+
+    $('empresa').addEventListener('input', (e) => {
+      state.empresa = e.target.value.trim() || 'Mi Empresa';
+      document.title = `Cotizaciones - ${state.empresa}`;
+      updatePrintView();
+    });
+
+    $('logo').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      state.logo = await fileToDataURL(file);
+      $('logoPreview').src = state.logo;
+      updatePrintView();
+    });
+
+    $('agregarCliente').addEventListener('click', () => {
+      const nombre = $('clienteNombre').value.trim();
+      if (!nombre) return;
+      state.clientes.push(nombre);
+      $('clienteNombre').value = '';
+      renderClientes();
+      updatePrintView();
+    });
+
+    $('agregarProducto').addEventListener('click', async () => {
+      const nombre = $('productoNombre').value.trim();
+      const precio = Number($('productoPrecio').value);
+      const file = $('productoImagen').files[0];
+      if (!nombre || !precio) return;
+      let imagen = '';
+      if (file) imagen = await fileToDataURL(file);
+      state.productos.push({ nombre, precio, imagen });
+      $('productoNombre').value = '';
+      $('productoPrecio').value = '';
+      $('productoImagen').value = '';
+      renderProductos();
+    });
+
+    $('agregarItem').addEventListener('click', () => {
+      const idx = Number($('selectProducto').value);
+      const cantidad = Number($('cantidad').value);
+      if (!Number.isInteger(idx) || idx < 0 || !state.productos[idx] || cantidad < 1) return;
+      const p = state.productos[idx];
+      state.cotizacion.push({ nombre: p.nombre, precio: p.precio, cantidad });
+      renderCotizacion();
+      updatePrintView();
+    });
+
+    $('limpiarCotizacion').addEventListener('click', () => {
+      state.cotizacion = [];
+      renderCotizacion();
+      updatePrintView();
+    });
+
+    $('btnImprimir').addEventListener('click', () => {
+      updatePrintView();
+      window.print();
+    });
+
+    function renderClientes() {
+      $('listaClientes').innerHTML = state.clientes.map((c) => `<li>${c}</li>`).join('');
+      $('selectCliente').innerHTML = state.clientes.length
+        ? state.clientes.map((c) => `<option>${c}</option>`).join('')
+        : '<option>Sin clientes</option>';
+    }
+
+    function renderProductos() {
+      const body = $('tablaProductos');
+      body.innerHTML = '';
+      state.productos.forEach((p) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.imagen ? `<img class="thumb" src="${p.imagen}" alt="${p.nombre}"/>` : '-'}</td>
+          <td>${p.nombre}</td>
+          <td>${formatMoney(p.precio)}</td>
+        `;
+        body.appendChild(tr);
+      });
+      $('selectProducto').innerHTML = state.productos.length
+        ? state.productos.map((p, i) => `<option value="${i}">${p.nombre} (${formatMoney(p.precio)})</option>`).join('')
+        : '<option value="">Sin productos</option>';
+    }
+
+    function renderCotizacion() {
+      const body = $('tablaCotizacion');
+      body.innerHTML = '';
+      let subtotal = 0;
+
+      state.cotizacion.forEach((item) => {
+        const sub = item.precio * item.cantidad;
+        subtotal += sub;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nombre}</td>
+          <td>${item.cantidad}</td>
+          <td>${formatMoney(item.precio)}</td>
+          <td>${formatMoney(sub)}</td>
+        `;
+        body.appendChild(tr);
+      });
+
+      const igv = subtotal * IGV;
+      const total = subtotal + igv;
+      $('subtotal').textContent = formatMoney(subtotal);
+      $('igv').textContent = formatMoney(igv);
+      $('total').textContent = formatMoney(total);
+    }
+
+    function updatePrintView() {
+      const cliente = $('selectCliente').value || 'Sin cliente';
+      let subtotal = 0;
+      $('printEmpresa').textContent = state.empresa || 'Mi Empresa';
+      $('printCliente').textContent = cliente;
+      $('printFecha').textContent = new Date().toLocaleDateString('es-PE');
+      $('printLogo').src = state.logo || '';
+
+      const printBody = $('printTabla');
+      printBody.innerHTML = '';
+      state.cotizacion.forEach((item) => {
+        const sub = item.precio * item.cantidad;
+        subtotal += sub;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.nombre}</td>
+          <td>${item.cantidad}</td>
+          <td>${formatMoney(item.precio)}</td>
+          <td>${formatMoney(sub)}</td>
+        `;
+        printBody.appendChild(tr);
+      });
+
+      const igv = subtotal * IGV;
+      const total = subtotal + igv;
+      $('printSubtotal').textContent = formatMoney(subtotal);
+      $('printIgv').textContent = formatMoney(igv);
+      $('printTotal').textContent = formatMoney(total);
+    }
+
+    function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
+</body>
+</html>

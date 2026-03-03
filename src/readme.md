@@ -1,5 +1,11 @@
-"Lorem ipsum dulor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-labore et dulore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labo
-ris nisi ut aliquip ex ea commodo consequat. Duis aute irure dulor in reprehenderit in voluptate
-velit esse cillum dulore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+# Sistema de cotizaciones
+
+Abre `src/index.html` en tu navegador.
+
+## Funciones
+- Inicio de sesión con usuario y contraseña (`admin` / `1234`).
+- Menú por módulos: **Clientes**, **Productos**, **Elaborar cotización** e **Imprimir cotización**.
+- Registro de clientes.
+- Registro de productos con imagen y costo unitario.
+- Cotización con cálculo de subtotal, IGV (18%) y total.
+- Vista lista para imprimir con logo de empresa y botón **Imprimir cotización**.

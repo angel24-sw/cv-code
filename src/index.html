@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema SVI - Gestión de Productos</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Sistema SVI</h1>
+      <p>Gestión de productos, inventario y métricas</p>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>Nuevo producto</h2>
+        <form id="product-form">
+          <label>
+            Nombre
+            <input name="name" required placeholder="Ej: Monitor 27\"" />
+          </label>
+          <label>
+            SKU
+            <input name="sku" required placeholder="Ej: MON-27-001" />
+          </label>
+          <label>
+            Categoría
+            <input name="category" required placeholder="Ej: Electrónica" />
+          </label>
+          <div class="split">
+            <label>
+              Precio
+              <input name="price" required type="number" min="0" step="0.01" placeholder="0.00" />
+            </label>
+            <label>
+              Stock
+              <input name="stock" required type="number" min="0" step="1" placeholder="0" />
+            </label>
+          </div>
+          <button type="submit">Guardar producto</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Resumen</h2>
+        <div class="stats">
+          <article>
+            <h3 id="total-products">0</h3>
+            <p>Productos</p>
+          </article>
+          <article>
+            <h3 id="total-stock">0</h3>
+            <p>Unidades en stock</p>
+          </article>
+          <article>
+            <h3 id="inventory-value">$0.00</h3>
+            <p>Valor inventario</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card card-wide">
+        <div class="table-header">
+          <h2>Listado de productos</h2>
+          <button id="clear-btn" class="danger" type="button">Limpiar todo</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>SKU</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="products-body"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <template id="row-template">
+      <tr>
+        <td data-col="name"></td>
+        <td data-col="sku"></td>
+        <td data-col="category"></td>
+        <td data-col="price"></td>
+        <td data-col="stock"></td>
+        <td>
+          <button class="danger" data-action="delete" type="button">Eliminar</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

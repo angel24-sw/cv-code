@@ -1,2 +1,3 @@
- hola mundo! soy un chico feliz 
- cambio de la nueva rama
+# Inicio
+
+Nuevo sistema disponible en `src/sistema_ventas_php_python`.

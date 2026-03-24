@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Panel principal{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Panel de registros</h1>
+    <p class="text-muted mb-0">Resumen y seguimiento de actividades sanitarias.</p>
+  </div>
+  <a href="{{ url_for('create_activity') }}" class="btn btn-primary">Registrar actividad</a>
+</div>
+
+<div class="row g-3 mb-4">
+  {% for key, label in activity_labels.items() %}
+  <div class="col-sm-6 col-xl-4">
+    <div class="card stat-card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <p class="text-muted small mb-2">{{ label }}</p>
+        <h2 class="h4 fw-bold mb-0">{{ summary[key] }}</h2>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white border-0 pt-3">
+    <h2 class="h5 mb-0">Historial</h2>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Actividad</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in activities %}
+        <tr>
+          <td>{{ activity_labels[item.activity_type] }}</td>
+          <td>
+            {% if item.activity_type in quantity_types %}
+              {{ item.quantity }} baldes
+            {% else %}
+              --
+            {% endif %}
+          </td>
+          <td>{{ item.activity_date.strftime('%d/%m/%Y') }}</td>
+          <td>{{ item.notes or '--' }}</td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4" class="text-center text-muted py-4">Aún no hay registros.</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

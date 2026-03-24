@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Nuevo registro{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 fw-bold mb-3">Registrar actividad</h1>
+        <form method="post" id="activityForm">
+          <div class="mb-3">
+            <label class="form-label">Tipo de actividad</label>
+            <select class="form-select" name="activity_type" id="activityType" required>
+              <option value="">Selecciona...</option>
+              {% for key, label in activity_labels.items() %}
+              <option value="{{ key }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3" id="quantityGroup" style="display:none;">
+            <label class="form-label">Cantidad (baldes)</label>
+            <input type="number" min="0" class="form-control" name="quantity" id="quantityInput">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Fecha de ejecución</label>
+            <input type="date" class="form-control" name="activity_date" value="{{ today }}" required>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Notas</label>
+            <textarea class="form-control" name="notes" rows="3" placeholder="Detalles opcionales..."></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Cancelar</a>
+            <button class="btn btn-primary" type="submit">Guardar registro</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const quantityTypes = {{ quantity_types | tojson }};
+  const typeSelect = document.getElementById('activityType');
+  const quantityGroup = document.getElementById('quantityGroup');
+  const quantityInput = document.getElementById('quantityInput');
+
+  function toggleQuantityField() {
+    const isQuantityType = quantityTypes.includes(typeSelect.value);
+    quantityGroup.style.display = isQuantityType ? 'block' : 'none';
+    quantityInput.required = isQuantityType;
+    if (!isQuantityType) quantityInput.value = '';
+  }
+
+  typeSelect.addEventListener('change', toggleQuantityField);
+  toggleQuantityField();
+</script>
+{% endblock %}
